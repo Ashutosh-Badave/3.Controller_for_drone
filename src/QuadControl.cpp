@@ -168,22 +168,37 @@ float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, flo
   //   return a collective thrust command in [N]
 
   // HINTS: 
-  //  - we already provide rotation matrix R: to get element R[1,2] (python) use R(1,2) (C++)
-  //  - you'll need the gain parameters kpPosZ and kpVelZ
-  //  - maxAscentRate and maxDescentRate are maximum vertical speeds. Note they're both >=0!
-  //  - make sure to return a force, not an acceleration
-  //  - remember that for an upright quad in NED, thrust should be HIGHER if the desired Z acceleration is LOWER
+    //  - we already provide rotation matrix R: to get element R[1,2] (python) use R(1,2) (C++)
+    //  - you'll need the gain parameters kpPosZ and kpVelZ
+    //  - maxAscentRate and maxDescentRate are maximum vertical speeds. Note they're both >=0!
+    //  - make sure to return a force, not an acceleration
+    //  - remember that for an upright quad in NED, thrust should be HIGHER if the desired Z acceleration is LOWER
 
-  Mat3x3F R = attitude.RotationMatrix_IwrtB();
-  float thrust = 0;
+    Mat3x3F R = attitude.RotationMatrix_IwrtB();
+    float thrust = 0;
 
-  ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    float pos_err = posZCmd - posZ;
+    float vel_err = velZCmd - velZ;
 
+    float u_1_bar = (kpPosZ * pos_err) + (kpVelZ * vel_err) + accelZCmd; //+i_term : KiPosZ * integratedAltitudeError
 
+    float verticle_acc = (u_1_bar - CONST_GRAVITY) / R(2, 2);
 
-  /////////////////////////////// END STUDENT CODE ////////////////////////////
-  
-  return thrust;
+    // descent mode
+    if (verticle_acc > (maxDescentRate / dt)) {
+        verticle_acc = maxDescentRate / dt;
+    }
+    // ascent mode
+    if (verticle_acc < (-maxAscentRate / dt)) {
+        verticle_acc = -maxAscentRate / dt;
+    }
+
+    thrust = -mass * verticle_acc;
+
+    /////////////////////////////// END STUDENT CODE ////////////////////////////
+
+    return thrust;
 }
 
 // returns a desired acceleration in global frame
