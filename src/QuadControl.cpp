@@ -71,23 +71,23 @@ VehicleCommand QuadControl::GenerateMotorCommands(float collThrustCmd, V3F momen
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
 
     float c_bar = collThrustCmd;
-  //calculate distance to axes
-    float l = L / pow(2.f,0.5);
+    //calculate distance to axes
+    float l = L / pow(2.f, 0.5);
     float p_bar = momentCmd.x / l;
 
     float q_bar = momentCmd.y / l;
 
-    float r_bar = - momentCmd.z / kappa;
+    float r_bar = -momentCmd.z / kappa;
 
 
-    cmd.desiredThrustsN[0] = (c_bar + p_bar + q_bar - r_bar)/4.f; // front left
-    cmd.desiredThrustsN[1] = (c_bar - p_bar + q_bar + r_bar)/4.f; // front right
-    cmd.desiredThrustsN[2] = (c_bar + p_bar - q_bar + r_bar)/4.f; // rear left
-    cmd.desiredThrustsN[3] = (c_bar - p_bar - q_bar - r_bar)/4.f; // rear right
+    cmd.desiredThrustsN[0] = (c_bar + p_bar + q_bar + r_bar) / 4.f; // front left
+    cmd.desiredThrustsN[1] = (c_bar - p_bar + q_bar - r_bar) / 4.f; // front right
+    cmd.desiredThrustsN[2] = (c_bar + p_bar - q_bar - r_bar) / 4.f; // rear left
+    cmd.desiredThrustsN[3] = (c_bar - p_bar - q_bar + r_bar) / 4.f; // rear right
 
-  /////////////////////////////// END STUDENT CODE ////////////////////////////
+    /////////////////////////////// END STUDENT CODE ////////////////////////////
 
-  return cmd;
+    return cmd;
 }
 
 V3F QuadControl::BodyRateControl(V3F pqrCmd, V3F pqr)
@@ -141,7 +141,7 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
     Mat3x3F R = attitude.RotationMatrix_IwrtB();
 
     ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-    float c_d = collThrustCmd / mass;
+    float c_d = -collThrustCmd / mass;
     float b_x_c_dot = kpBank * (accelCmd.x / c_d - R(0, 2));
     float b_y_c_dot = kpBank * (accelCmd.y / c_d - R(1, 2));
 
@@ -266,21 +266,29 @@ float QuadControl::YawControl(float yawCmd, float yaw)
 {
   // Calculate a desired yaw rate to control yaw to yawCmd
   // INPUTS: 
-  //   yawCmd: commanded yaw [rad]
-  //   yaw: current yaw [rad]
-  // OUTPUT:
-  //   return a desired yaw rate [rad/s]
-  // HINTS: 
-  //  - use fmodf(foo,b) to unwrap a radian angle measure float foo to range [0,b]. 
-  //  - use the yaw control gain parameter kpYaw
+    //   yawCmd: commanded yaw [rad]
+    //   yaw: current yaw [rad]
+    // OUTPUT:
+    //   return a desired yaw rate [rad/s]
+    // HINTS:
+    //  - use fmodf(foo,b) to unwrap a radian angle measure float foo to range [0,b].
+    //  - use the yaw control gain parameter kpYaw
 
-  float yawRateCmd=0;
-  ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    float yawRateCmd = 0;
+    ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    float yawError = yawCmd - yaw;
+    yawError = fmodf(yawError, M_PI * 2.f);
 
+    if (yawError > M_PI) {
+        yawError -= 2.f * M_PI;
+    } else if (yawError < -M_PI) {
+        yawError += 2.f * M_PI;
+    }
+    yawRateCmd = kpYaw * yawError;
 
-  /////////////////////////////// END STUDENT CODE ////////////////////////////
+    /////////////////////////////// END STUDENT CODE ////////////////////////////
 
-  return yawRateCmd;
+    return yawRateCmd;
 
 }
 

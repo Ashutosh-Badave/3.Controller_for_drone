@@ -1,6 +1,6 @@
 #Project steps explained 
 Below I have explained each tasks solution.
-### Task 1 Implemented body rate and roll/pitch control in C++
+### Task 1 Implemented body rate and roll/pitch control in C++ ###
 >> To implement p controller of body rate and roll/pitch, I have taken help from *body_rate_control()* and *roll_pitch_controller()* functions of
 > [Python controller code](https://github.com/udacity/FCND-Controls/blob/solution/controller.py)
 
@@ -47,3 +47,4 @@ Below I have explained each tasks solution.
 <p align="center">
 <img src="output/rollpitchtunned.gif" width="500"/>
 </p>
+
