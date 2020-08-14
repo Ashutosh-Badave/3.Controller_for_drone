@@ -46,5 +46,5 @@ Below I have explained each tasks solution.
 - Same way angle control gains (kpBank) is tuned to 12.
 > After the above implementation and tunning of paramters , we got below output:
 <p align="center">
-<img src="animations/scenario1.gif" width="500"/>
+<img src="output/rollpitchtunned.gif" width="500"/>
 </p>
