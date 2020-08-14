@@ -132,21 +132,26 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
   //   return a V3F containing the desired pitch and roll rates. The Z
   //     element of the V3F should be left at its default value (0)
 
-  // HINTS: 
-  //  - we already provide rotation matrix R: to get element R[1,2] (python) use R(1,2) (C++)
-  //  - you'll need the roll/pitch gain kpBank
-  //  - collThrustCmd is a force in Newtons! You'll likely want to convert it to acceleration first
+    // HINTS:
+    //  - we already provide rotation matrix R: to get element R[1,2] (python) use R(1,2) (C++)
+    //  - you'll need the roll/pitch gain kpBank
+    //  - collThrustCmd is a force in Newtons! You'll likely want to convert it to acceleration first
 
-  V3F pqrCmd;
-  Mat3x3F R = attitude.RotationMatrix_IwrtB();
+    V3F pqrCmd;
+    Mat3x3F R = attitude.RotationMatrix_IwrtB();
 
-  ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    float c_d = collThrustCmd / mass;
+    float b_x_c_dot = kpBank * (accelCmd[0] / c_d - R(0, 2));
+    float b_y_c_dot = kpBank * (accelCmd[1] / c_d - R(1, 2));
 
+    pqrCmd.x = (R(1, 0) * b_x_c_dot - R(0, 0) * b_y_c_dot) / R(2, 2);
+    pqrCmd.y = (R(1, 1) * b_x_c_dot - R(0, 1) * b_y_c_dot) / R(2, 2);
+    pqrCmd.z = 0.f;
 
+    /////////////////////////////// END STUDENT CODE ////////////////////////////
 
-  /////////////////////////////// END STUDENT CODE ////////////////////////////
-
-  return pqrCmd;
+    return pqrCmd;
 }
 
 float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, float velZ, Quaternion<float> attitude, float accelZCmd, float dt)
