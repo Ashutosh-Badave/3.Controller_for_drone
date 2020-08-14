@@ -181,7 +181,7 @@ float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, flo
     float pos_err = posZCmd - posZ;
     float vel_err = velZCmd - velZ;
 
-    float u_1_bar = (kpPosZ * pos_err) + (kpVelZ * vel_err) + accelZCmd; //+i_term : KiPosZ * integratedAltitudeError
+    float u_1_bar = (kpPosZ * pos_err) + (kpVelZ * vel_err) + accelZCmd;
 
     float verticle_acc = (u_1_bar - CONST_GRAVITY) / R(2, 2);
 
