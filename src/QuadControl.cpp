@@ -142,8 +142,8 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
 
     ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
     float c_d = collThrustCmd / mass;
-    float b_x_c_dot = kpBank * (accelCmd[0] / c_d - R(0, 2));
-    float b_y_c_dot = kpBank * (accelCmd[1] / c_d - R(1, 2));
+    float b_x_c_dot = kpBank * (accelCmd.x / c_d - R(0, 2));
+    float b_y_c_dot = kpBank * (accelCmd.y / c_d - R(1, 2));
 
     pqrCmd.x = (R(1, 0) * b_x_c_dot - R(0, 0) * b_y_c_dot) / R(2, 2);
     pqrCmd.y = (R(1, 1) * b_x_c_dot - R(0, 1) * b_y_c_dot) / R(2, 2);
@@ -207,21 +207,43 @@ V3F QuadControl::LateralPositionControl(V3F posCmd, V3F velCmd, V3F pos, V3F vel
 
   // make sure we don't have any incoming z-component
   accelCmdFF.z = 0;
-  velCmd.z = 0;
-  posCmd.z = pos.z;
+    velCmd.z = 0;
+    posCmd.z = pos.z;
 
-  // we initialize the returned desired acceleration to the feed-forward value.
-  // Make sure to _add_, not simply replace, the result of your controller
-  // to this variable
-  V3F accelCmd = accelCmdFF;
+    // we initialize the returned desired acceleration to the feed-forward value.
+    // Make sure to _add_, not simply replace, the result of your controller
+    // to this variable
+    V3F accelCmd = accelCmdFF;
 
-  ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+    ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
 
-  
+    V3F pos_diff;
+    pos_diff.x = kpPosXY * (posCmd.x - pos.x);
+    pos_diff.y = kpPosXY * (posCmd.y - pos.y);
 
-  /////////////////////////////// END STUDENT CODE ////////////////////////////
+    // limit horizontal velocity
+    float velCmd_norm = pow(pow(velCmd.x, 2) + pow(velCmd.y, 2), 0.5);
+    if (velCmd_norm > maxSpeedXY) {
+        velCmd.x = (velCmd.x * maxSpeedXY) / velCmd_norm;
+        velCmd.y = (velCmd.y * maxSpeedXY) / velCmd_norm;
+    }
 
-  return accelCmd;
+    V3F vel_diff;
+    vel_diff.x = kpVelXY * (velCmd.x - vel.x);
+    vel_diff.y = kpVelXY * (velCmd.y - vel.y);
+
+    accelCmd += pos_diff + vel_diff;
+
+    // limit horizontal acceleration
+    float accelCmd_norm = pow(pow(accelCmd.x, 2) + pow(accelCmd.y, 2), 0.5);
+    if (accelCmd_norm > maxAccelXY) {
+        accelCmd.x = (accelCmd.x * maxAccelXY) / accelCmd_norm;
+        accelCmd.y = (accelCmd.y * maxAccelXY) / accelCmd_norm;
+    }
+
+    /////////////////////////////// END STUDENT CODE ////////////////////////////
+
+    return accelCmd;
 }
 
 // returns desired yaw rate
