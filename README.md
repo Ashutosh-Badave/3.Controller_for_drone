@@ -1,4 +1,4 @@
-# The C++ Project Readme #
+# Controller for Drone #
 
 This is the readme for the C++ project.
 
