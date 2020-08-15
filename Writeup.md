@@ -1,5 +1,10 @@
 #Project steps explained 
-Below I have explained each tasks solution.
+
+Below I have explained each tasks solution to reach this outcome:
+
+<p align="center">
+<img src="output/final_trajectory.gif" width="800" height="586"/>
+</p>
 
 ### Task 1 Tunning of mass of drone (scenario 1) ###
 After trial and error strategy, I figure it out that drone is stable around 0.495.  
@@ -141,4 +146,3 @@ float pos_err = posZCmd - posZ;
     cmd.desiredThrustsN[3] = (c_bar - p_bar - q_bar + r_bar) / 4.f; // rear right
 </code></pre>
 
-    
