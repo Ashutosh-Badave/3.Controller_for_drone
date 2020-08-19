@@ -26,3 +26,6 @@ bld/
 
 # manual cmake build ignores
 build/
+
+# Clion build igonres
+cmake-build-debug/
