@@ -7,7 +7,7 @@ For easy navigation throughout this document, here is an outline:
 
  - [Development environment setup](#development-environment-setup)
  - [Simulator and code](#simulator-walkthrough)
- - [Testing](#Testing it Out)
+ - [Testing ](#Testing-it-Out)
 
 
 
