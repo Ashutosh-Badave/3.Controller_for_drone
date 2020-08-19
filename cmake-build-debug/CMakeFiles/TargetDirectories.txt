@@ -1,3 +1,0 @@
-/home/ashutosh/Documents/Autonomous-Flight-Nanodegree/FCND-Controls-CPP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/ashutosh/Documents/Autonomous-Flight-Nanodegree/FCND-Controls-CPP/cmake-build-debug/CMakeFiles/CPPSim.dir
-/home/ashutosh/Documents/Autonomous-Flight-Nanodegree/FCND-Controls-CPP/cmake-build-debug/CMakeFiles/edit_cache.dir
