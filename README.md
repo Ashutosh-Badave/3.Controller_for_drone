@@ -14,7 +14,9 @@ For easy navigation throughout this document, here is an outline:
 
 The first step is to download or clone this repository.
 
-> git clone https://github.com/Ashutosh-Badave/Controller_for_drone.git 
+ ```
+ git clone https://github.com/Ashutosh-Badave/Controller_for_drone.git 
+ ```
 
 Once you have the code for the simulator, you will need to install the necessary compiler and IDE necessary for running the simulator.
 
