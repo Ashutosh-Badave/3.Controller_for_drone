@@ -1,4 +1,4 @@
-#Project steps explained 
+# Implementation steps
 
 Below I have explained each tasks solution to reach this outcome:
 
