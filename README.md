@@ -1,7 +1,6 @@
 # Controller for Drone #
 
-In this project, I have implemented the PID controller for Drone, furthermore, I have done the tuning of controller for different scenarios and flying conditions 
-
+In this project, I have implemented the PID controller for Drone and tuning of controller for different scenarios/flying conditions.  All the steps of implementations are explained in [`writeup.md`](./writeup.md) file.
 
 For easy navigation throughout this document, here is an outline:
 
